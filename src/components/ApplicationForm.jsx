@@ -25,7 +25,15 @@ const ApplicationForm = ({ onSubmit, initialData = {}, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const payload = { ...formData };
+
+  if (!payload.resume) {
+    delete payload.resume;
+  }
+
+  onSubmit(payload);
+    
   };
 
   useEffect(() => {

@@ -9,6 +9,8 @@ import KanbanBoard from "../pages/KanbanBoard";
 import ProtectedRoute from "../components/ProtectedRoute";
 import InterviewTracker from "../pages/InterviewTracker";
 import ResumeManager from "../pages/ResumeManager";
+import ResumeAnalyser from "../pages/ResumeAnalyser";
+import JobPreparation from "../pages/JobPreparation";
 
 const AppRoutes = () => {
   return (
@@ -60,6 +62,10 @@ const AppRoutes = () => {
           }
         />
         <Route path="/resumes" element={<ProtectedRoute><ResumeManager /></ProtectedRoute>} />
+
+        <Route path="/resume-analyser" element={<ProtectedRoute><ResumeAnalyser /></ProtectedRoute>} />
+
+        <Route path="/job-prep" element={<ProtectedRoute><JobPreparation /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import API from "../api/axios"
+import API from "../api/axios";
 import DashboardLayout from "../layout/DashboardLayout";
 import StatusChart from "../components/charts/StatusChart";
 import RecentApplications from "../components/RecentApplications";
 import UpcomingInterviews from "../components/UpcomingInterviews";
 import MonthlyChart from "../components/charts/MonthlyChart";
+import ActivityTimeline from "../components/ActivityTimeline";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -125,7 +126,7 @@ const Dashboard = () => {
               <div className="card-body">
                 <h5 className="mb-3">Monthly Applications</h5>
 
-               <MonthlyChart/>
+                <MonthlyChart />
               </div>
             </div>
           </div>
@@ -142,8 +143,11 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent apps */}
-       
+        <div className="row mt-4">
+          <div className="col-12">
+            <ActivityTimeline />
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );

@@ -42,6 +42,16 @@ const Sidebar = () => {
             Resumes
           </Link>
         </li>
+        <li className="nav-item mb-2">
+          <Link className="nav-link text-white" to="/resume-analyser">
+            Analyse Resume
+          </Link>
+        </li>
+         <li className="nav-item mb-2">
+          <Link className="nav-link text-white" to="/job-prep">
+            Job Preparation
+          </Link>
+        </li>
       </ul>
     </div>
   );

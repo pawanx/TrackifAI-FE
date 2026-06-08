@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const VITE_API_URL="https://trackifai-backend1.onrender.com/api"
-// baseURL : "http://localhost:5000/api"
+// baseURL: import.meta.env.VITE_API_URL
 const API = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL : "http://localhost:5000/api"
 })
 
 API.interceptors.request.use((config) => {
