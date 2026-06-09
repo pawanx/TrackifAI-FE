@@ -5,8 +5,13 @@ import API from "../api/axios";
 import DashboardLayout from "../layout/DashboardLayout";
 import ApplicationForm from "../components/ApplicationForm";
 import { APPLICATION_STATUS } from "../constants/applicationStatus";
+import "../styles/application.css";
 
 const Applications = () => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [applicationToDelete, setApplicationToDelete] = useState(null);
+  const [fetching, setFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [totalPages, setTotalPages] = useState(1);
@@ -66,6 +71,7 @@ const Applications = () => {
   };
 
   const fetchApplications = async () => {
+    setFetching(true);
     try {
       const params = new URLSearchParams();
 
@@ -86,18 +92,21 @@ const Applications = () => {
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
       console.log(error);
+    } finally {
+      setFetching(false);
     }
   };
 
-  const deleteApplication = async (id) => {
-    const confirmDelete = window.confirm("Delete application?");
-
-    if (!confirmDelete) return;
+  const deleteApplication = async () => {
+    if (!applicationToDelete) return;
 
     try {
-      await API.delete(`/applications/${id}`);
+      await API.delete(`/applications/${applicationToDelete._id}`);
 
       fetchApplications();
+
+      setShowDeleteModal(false);
+      setApplicationToDelete(null);
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +138,13 @@ const Applications = () => {
     <DashboardLayout>
       <div className="container-fluid p-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h2>Applications</h2>
+          <div>
+            <h2>Job Applications</h2>
+
+            <p className="text-muted mb-0">
+              Manage and track your application pipeline
+            </p>
+          </div>
 
           <button
             className="btn btn-primary"
@@ -153,22 +168,22 @@ const Applications = () => {
           </div>
 
           <div className="col-md-4">
-          <select
-            className="form-select"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="">All Status</option>
+            <select
+              className="form-select"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="">All Status</option>
 
-            {APPLICATION_STATUS.map((statusItem) => (
-              <option key={statusItem} value={statusItem}>
-                {statusItem}
-              </option>
-            ))}
-          </select>
+              {APPLICATION_STATUS.map((statusItem) => (
+                <option key={statusItem} value={statusItem}>
+                  {statusItem}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="col-md-4">
@@ -216,60 +231,77 @@ const Applications = () => {
               </thead>
 
               <tbody>
-                {applications.map((application) => (
-                  <tr key={application._id}>
-                    <td>{application.companyName}</td>
-
-                    <td>{application.role}</td>
-
-                    <td>
-                      <span
-                        className={`badge ${getStatusClass(
-                          application.status,
-                        )}`}
-                      >
-                        {application.status}
-                      </span>
-                    </td>
-
-                    <td>{application.source}</td>
-
-                    <td>
-                      {new Date(
-                        application.applicationDate,
-                      ).toLocaleDateString()}
-                    </td>
-
-                    <td>{application.resume?.title || "-"}</td>
-
-                    <td className="text-nowrap">
-                      <button
-                        className="btn btn-sm btn-warning me-2"
-                        onClick={() => {
-                          setEditingApplication(application);
-
-                          setShowEditModal(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => deleteApplication(application._id)}
-                      >
-                        Delete
-                      </button>
-
-                      <Link
-                        to={`/applications/${application._id}/interviews`}
-                        className="btn btn-sm btn-info me-2 mx-2"
-                      >
-                        Interviews
-                      </Link>
+                {fetching ? (
+                  <tr>
+                    <td colSpan="7" className="text-center p-5">
+                      Loading applications...
                     </td>
                   </tr>
-                ))}
+                ) : applications.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="text-center p-5">
+                      No applications found
+                    </td>
+                  </tr>
+                ) : (
+                  applications.map((application) => (
+                    <tr key={application._id}>
+                      <td>{application.companyName}</td>
+
+                      <td>{application.role}</td>
+
+                      <td>
+                        <span
+                          className={`badge ${getStatusClass(
+                            application.status,
+                          )}`}
+                        >
+                          {application.status}
+                        </span>
+                      </td>
+
+                      <td>{application.source}</td>
+
+                      <td>
+                        {new Date(
+                          application.applicationDate,
+                        ).toLocaleDateString()}
+                      </td>
+
+                      <td>{application.resume?.title || "-"}</td>
+
+                      <td className="text-nowrap">
+                        <button
+                          className="btn btn-sm btn-warning me-2"
+                          onClick={() => {
+                            setEditingApplication(application);
+
+                            setShowEditModal(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => {
+                            setApplicationToDelete(application);
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+
+                        <Link
+                          to={`/applications/${application._id}/interviews`}
+                          className="btn btn-sm btn-info me-2 mx-2"
+                        >
+                          Interviews
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -298,51 +330,104 @@ const Applications = () => {
         </div>
 
         {showModal && (
-          <div className="modal d-block" tabIndex="-1">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Add Application</h5>
+          <>
+            <div className="modal d-block" tabIndex="-1">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Add Application</h5>
 
-                  <button
-                    className="btn-close"
-                    onClick={() => setShowModal(false)}
-                  />
-                </div>
+                    <button
+                      className="btn-close"
+                      onClick={() => setShowModal(false)}
+                    />
+                  </div>
 
-                <div className="modal-body">
-                  <ApplicationForm
-                    onSubmit={addApplication}
-                    loading={loading}
-                  />
+                  <div className="modal-body">
+                    <ApplicationForm
+                      onSubmit={addApplication}
+                      loading={loading}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="modal-backdrop fade show"></div>
+          </>
         )}
         {showEditModal && (
-          <div className="modal d-block" tabIndex="-1">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Edit Application</h5>
+          <>
+            <div className="modal d-block" tabIndex="-1">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Edit Application</h5>
 
-                  <button
-                    className="btn-close"
-                    onClick={() => setShowEditModal(false)}
-                  />
-                </div>
+                    <button
+                      className="btn-close"
+                      onClick={() => setShowEditModal(false)}
+                    />
+                  </div>
 
-                <div className="modal-body">
-                  <ApplicationForm
-                    initialData={editingApplication}
-                    onSubmit={updateApplication}
-                    loading={loading}
-                  />
+                  <div className="modal-body">
+                    <ApplicationForm
+                      initialData={editingApplication}
+                      onSubmit={updateApplication}
+                      loading={loading}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="modal-backdrop fade show"></div>
+          </>
+        )}
+
+        {showDeleteModal && (
+          <>
+            <div className="modal d-block">
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Delete Application</h5>
+
+                    <button
+                      className="btn-close"
+                      onClick={() => setShowDeleteModal(false)}
+                    />
+                  </div>
+
+                  <div className="modal-body">
+                    <p>Are you sure you want to delete this application?</p>
+
+                    <div className="alert alert-warning mb-0">
+                      <strong>{applicationToDelete?.companyName}</strong>
+
+                      {applicationToDelete?.role &&
+                        ` - ${applicationToDelete.role}`}
+                    </div>
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setShowDeleteModal(false)}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="btn btn-danger"
+                      onClick={deleteApplication}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-backdrop fade show"></div>
+          </>
         )}
       </div>
     </DashboardLayout>

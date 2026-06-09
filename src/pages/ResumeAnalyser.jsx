@@ -14,11 +14,13 @@ const ResumeAnalyser = () => {
   const [result, setResult] = useState(null);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const analyze = async () => {
     try {
       setLoading(true);
       setResult(null);
+      setError("");
       const { data } = await API.post("/ai/resume-match", {
         resumeId: selectedResume,
         jobDescription,
@@ -28,7 +30,9 @@ const ResumeAnalyser = () => {
     } catch (error) {
       console.log(error);
 
-      alert(error.response?.data?.message || "Analysis failed");
+      setError(
+        error.response?.data?.message || "Analysis failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -39,9 +43,14 @@ const ResumeAnalyser = () => {
   }, []);
 
   const fetchResumes = async () => {
-    const { data } = await API.get("/resumes");
+    try {
+      const { data } = await API.get("/resumes");
+      setResumes(data.data);
+    } catch (error) {
+      console.log(error);
 
-    setResumes(data.data);
+      setError(error.response?.data?.message || "Failed to load resumes.");
+    }
   };
 
   return (
@@ -55,7 +64,20 @@ const ResumeAnalyser = () => {
             AI-powered match score.
           </p>
         </div>
+        {error && (
+          <div
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            {error}
 
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setError("")}
+            ></button>
+          </div>
+        )}
         <div className="mb-3">
           <label>Select Resume</label>
 

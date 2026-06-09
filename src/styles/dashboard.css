@@ -1,0 +1,9 @@
+.dashboard-stat-card {
+  transition: all 0.25s ease;
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-4px);
+}
+
+

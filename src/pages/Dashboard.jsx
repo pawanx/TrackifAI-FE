@@ -6,6 +6,13 @@ import RecentApplications from "../components/RecentApplications";
 import UpcomingInterviews from "../components/UpcomingInterviews";
 import MonthlyChart from "../components/charts/MonthlyChart";
 import ActivityTimeline from "../components/ActivityTimeline";
+import "../styles/dashboard.css";
+import {
+  FaBriefcase,
+  FaCalendarCheck,
+  FaTrophy,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -46,18 +53,21 @@ const Dashboard = () => {
         {/* Main Stats */}
         <div className="row g-4 mb-4">
           <div className="col-md-3">
-            <div className="card shadow-sm h-100">
+            <div className="card dashboard-stat-card h-100 shadow-sm border-1">
               <div className="card-body">
-                <h6 className="text-muted">Total Applications</h6>
+                <FaBriefcase size={28} className="text-primary mb-2" />
 
-                <h2>{stats.totalApplications}</h2>
+                <h6 className="text-muted">Applications</h6>
+
+                <h2 className="fw-bold">{stats.totalApplications}</h2>
               </div>
             </div>
           </div>
 
           <div className="col-md-3">
-            <div className="card shadow-sm h-100">
+            <div className="card dashboard-stat-card h-100 shadow-sm border-1">
               <div className="card-body">
+                <FaCalendarCheck size={28} className="text-warning mb-2" />
                 <h6 className="text-muted">Interviews</h6>
 
                 <h2>{stats.interview}</h2>
@@ -66,8 +76,9 @@ const Dashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card shadow-sm h-100">
+            <div className="card dashboard-stat-card h-100 shadow-sm border-1">
               <div className="card-body">
+                <FaTrophy size={28} className="text-success mb-2" />
                 <h6 className="text-muted">Offers</h6>
 
                 <h2>{stats.offer}</h2>
@@ -76,8 +87,9 @@ const Dashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card shadow-sm h-100">
+            <div className="card dashboard-stat-card h-100 shadow-sm border-1">
               <div className="card-body">
+                <FaTimesCircle size={28} className="text-danger mb-2" />
                 <h6 className="text-muted">Rejected</h6>
 
                 <h2>{stats.rejected}</h2>
@@ -92,7 +104,14 @@ const Dashboard = () => {
             <div className="card shadow-sm h-100">
               <div className="card-body">
                 <h6 className="text-muted">Interview Rate</h6>
-
+                <div className="progress mb-2">
+                  <div
+                    className="progress-bar bg-warning"
+                    style={{
+                      width: `${stats.interviewRate || 0}%`,
+                    }}
+                  />
+                </div>
                 <h2>{stats.interviewRate || 0}%</h2>
               </div>
             </div>
@@ -102,7 +121,16 @@ const Dashboard = () => {
             <div className="card shadow-sm h-100">
               <div className="card-body">
                 <h6 className="text-muted">Offer Rate</h6>
+                <div className="progress mb-2">
+                  <div
+                    className="progress-bar bg-warning"
+                    style={{
+                      width: `${stats.offerRate || 0}%`,
+                    }}
+                  />
+                </div>
 
+                
                 <h2>{stats.offerRate || 0}%</h2>
               </div>
             </div>

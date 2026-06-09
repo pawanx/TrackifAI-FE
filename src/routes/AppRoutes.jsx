@@ -53,14 +53,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/applications/:id/interviews"
-          element={
-            <ProtectedRoute>
-              <InterviewTracker />
-            </ProtectedRoute>
-          }
-        />
+        
         <Route path="/resumes" element={<ProtectedRoute><ResumeManager /></ProtectedRoute>} />
 
         <Route path="/resume-analyser" element={<ProtectedRoute><ResumeAnalyser /></ProtectedRoute>} />
