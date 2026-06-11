@@ -137,7 +137,7 @@ const Applications = () => {
   return (
     <DashboardLayout>
       <div className="container-fluid p-4">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-4 application-header">
           <div>
             <h2>Job Applications</h2>
 
@@ -147,7 +147,7 @@ const Applications = () => {
           </div>
 
           <button
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm add-application-btn"
             onClick={() => setShowModal(true)}
           >
             Add Application

@@ -5,3 +5,30 @@
 .table tbody tr:hover {
   background-color: #f8fafc;
 }
+
+/* Header Responsive */
+.application-header {
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .application-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .application-header h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+
+  .application-header p {
+    display: none;
+  }
+
+  .add-application-btn {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+}

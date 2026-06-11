@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/auth.css";
 import { motion } from "framer-motion";
 
@@ -19,6 +19,8 @@ const Register = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -31,17 +33,18 @@ const Register = () => {
     e.preventDefault();
 
     setError("");
+    setSuccess("");
 
     try {
       setLoading(true);
 
       const { data } = await API.post("/auth/register", formData);
 
-      console.log("REGISTER RESPONSE:", data);
+      setSuccess("Account created successfully! Redirecting to login...");
 
-      login(data.token, data.user);
-
-      navigate("/dashboard");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
     } finally {
@@ -103,6 +106,8 @@ const Register = () => {
 
               {error && <div className="alert alert-danger">{error}</div>}
 
+              {success && <div className="alert alert-success">{success}</div>}
+
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label>Name</label>
@@ -151,13 +156,21 @@ const Register = () => {
                     </span>
 
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       className="form-control"
                       value={formData.password}
                       onChange={handleChange}
                       required
                     />
+
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
                   </div>
                 </div>
 

@@ -1,0 +1,9 @@
+.kanban-column {
+  min-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .kanban-column {
+    min-width: 220px;
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
-import DashboardLayout from "../layout/DashboardLayout"
+import DashboardLayout from "../layout/DashboardLayout";
+import "../styles/kanban.css"
 
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
@@ -21,8 +22,8 @@ const KanbanBoard = () => {
       setApplications(data.data);
     } catch (error) {
       console.log(error);
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,136 +91,80 @@ const KanbanBoard = () => {
   }
 
   return (
-   <DashboardLayout>
+    <DashboardLayout>
       <div className="container-fluid p-4">
         <div className="mb-4">
           <h2>Kanban Board</h2>
 
-          <p className="text-muted">
-            Drag applications between stages
-          </p>
+          <p className="text-muted">Drag applications between stages</p>
         </div>
 
-        <DragDropContext
-          onDragEnd={handleDragEnd}
-        >
+        <DragDropContext onDragEnd={handleDragEnd}>
           <div
-            className="d-flex gap-3 overflow-auto"
+            className="row g-3"
             style={{
               minHeight: "75vh",
             }}
           >
-            {APPLICATION_STATUS.map(
-              (status) => {
-                const apps =
-                  applications.filter(
-                    (app) =>
-                      app.status ===
-                      status
-                  );
+            {APPLICATION_STATUS.map((status) => {
+              const apps = applications.filter((app) => app.status === status);
 
-                return (
-                  <div
-                    key={status}
-                    style={{
-                      minWidth:
-                        "190px",
-                    }}
-                  >
+              return (
+                <div key={status} className="col-6 col-lg kanban-column">
+                  <div className={`card shadow-sm`}>
                     <div
-                      className={`card shadow-sm`}
+                      className={`card-header fw-bold ${getHeaderClass(
+                        status,
+                      )}`}
                     >
-                      <div
-                        className={`card-header fw-bold ${getHeaderClass(
-                          status
-                        )}`}
-                      >
-                        {status} (
-                        {apps.length})
-                      </div>
-
-                      <Droppable
-                        droppableId={
-                          status
-                        }
-                      >
-                        {(
-                          provided
-                        ) => (
-                          <div
-                            ref={
-                              provided.innerRef
-                            }
-                            {...provided.droppableProps}
-                            className="card-body bg-light"
-                            style={{
-                              minHeight:
-                                "500px",
-                            }}
-                          >
-                            {apps.map(
-                              (
-                                app,
-                                index
-                              ) => (
-                                <Draggable
-                                  key={
-                                    app._id
-                                  }
-                                  draggableId={
-                                    app._id
-                                  }
-                                  index={
-                                    index
-                                  }
-                                >
-                                  {(
-                                    provided
-                                  ) => (
-                                    <div
-                                      ref={
-                                        provided.innerRef
-                                      }
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      className="card mb-3 shadow-sm"
-                                    >
-                                      <div className="card-body">
-                                        <h6>
-                                          {
-                                            app.companyName
-                                          }
-                                        </h6>
-
-                                        <p className="mb-1">
-                                          {
-                                            app.role
-                                          }
-                                        </p>
-
-                                        <small className="text-muted">
-                                          {
-                                            app.source
-                                          }
-                                        </small>
-                                      </div>
-                                    </div>
-                                  )}
-                                </Draggable>
-                              )
-                            )}
-
-                            {
-                              provided.placeholder
-                            }
-                          </div>
-                        )}
-                      </Droppable>
+                      {status} ({apps.length})
                     </div>
+
+                    <Droppable droppableId={status}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          className="card-body bg-light"
+                          style={{
+                            minHeight: "500px",
+                          }}
+                        >
+                          {apps.map((app, index) => (
+                            <Draggable
+                              key={app._id}
+                              draggableId={app._id}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="card mb-3 shadow-sm"
+                                >
+                                  <div className="card-body">
+                                    <h6>{app.companyName}</h6>
+
+                                    <p className="mb-1">{app.role}</p>
+
+                                    <small className="text-muted">
+                                      {app.source}
+                                    </small>
+                                  </div>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
                   </div>
-                );
-              }
-            )}
+                </div>
+              );
+            })}
           </div>
         </DragDropContext>
       </div>
