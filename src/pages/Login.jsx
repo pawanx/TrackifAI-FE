@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEnvelope, FaLock,FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword,setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -125,14 +125,14 @@ const Login = () => {
                     </span>
 
                     <input
-                       type={showPassword ? "text" : "password"}
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       className="form-control"
                       value={formData.password}
                       onChange={handleChange}
                       required
                     />
-                     <button
+                    <button
                       type="button"
                       className="btn btn-outline-secondary"
                       onClick={() => setShowPassword(!showPassword)}
@@ -145,9 +145,10 @@ const Login = () => {
                 <button
                   className="btn btn-primary w-100 py-2"
                   disabled={loading}
-                  className="btn btn-primary w-100 py-2"
-                  disabled={loading}
+                 
                 >
+                 
+
                   {loading ? (
                     <>
                       <span
@@ -160,6 +161,14 @@ const Login = () => {
                     "Login"
                   )}
                 </button>
+                 <div className="text-end mb-3">
+                    <Link
+                      to="/forgot-password"
+                      className="text-decoration-none auth-switch"
+                    >
+                      Forgot Password?
+                    </Link>
+                  </div>
               </form>
 
               <p className="text-center mt-4">

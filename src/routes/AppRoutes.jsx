@@ -11,6 +11,8 @@ import InterviewTracker from "../pages/InterviewTracker";
 import ResumeManager from "../pages/ResumeManager";
 import ResumeAnalyser from "../pages/ResumeAnalyser";
 import JobPreparation from "../pages/JobPreparation";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = () => {
   return (
@@ -53,12 +55,37 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        
-        <Route path="/resumes" element={<ProtectedRoute><ResumeManager /></ProtectedRoute>} />
 
-        <Route path="/resume-analyser" element={<ProtectedRoute><ResumeAnalyser /></ProtectedRoute>} />
+        <Route
+          path="/resumes"
+          element={
+            <ProtectedRoute>
+              <ResumeManager />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/job-prep" element={<ProtectedRoute><JobPreparation /></ProtectedRoute>} />
+        <Route
+          path="/resume-analyser"
+          element={
+            <ProtectedRoute>
+              <ResumeAnalyser />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/job-prep"
+          element={
+            <ProtectedRoute>
+              <JobPreparation />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/forgot-password" element={ <ForgotPassword />} />
+
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );
