@@ -28,7 +28,7 @@ TrackifAI is an AI-powered job application tracking platform that helps job seek
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```text
 src/
@@ -111,6 +111,64 @@ const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 ```
+
+---
+
+## 📸 Project Screenshots
+
+### Dashboard
+
+Track your job search progress with analytics and application insights.
+
+![Dashboard](./src/assets/dashboard.png)
+
+---
+
+### Applications Management
+
+Manage, search, filter, edit, and track all job applications in one place.
+
+![Applications](./src/assets/application.png)
+
+---
+
+### Kanban Board
+
+Visualize your application pipeline and update statuses using drag-and-drop.
+
+![Kanban Board](./src/assets/kanban.png)
+
+---
+
+### Interview Tracker
+
+Track various rounds of interview and its outcomes.
+
+![Interview Tracker](./src/assets/interview_tracker.png)
+
+---
+
+### Resume Analyser
+
+Analyse your resume against a job description.
+
+![Resume Analyser](./src/assets/resume_analyse.png)
+
+---
+
+### Job Preparation
+
+Get frequently asked question based on job description.
+
+![Job Preparation](./src/assets/job_prep.png)
+
+---
+
+### Mobile Responsive Design
+
+TrackifAI is fully responsive and optimized for mobile devices.
+
+## ![Mobile View](./src/assets/mobile.png)
 
 ---
 
