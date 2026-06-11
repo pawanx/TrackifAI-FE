@@ -2,6 +2,16 @@
 
 TrackifAI is an AI-powered job application tracking platform that helps job seekers organize applications, monitor progress, prepare for interviews, and gain insights into their job search journey.
 
+---
+
+## 🚀 Live Demo
+
+🌐 **Frontend:** https://trackif-ai-fe.vercel.app/login
+
+⚙️ **Backend API:** https://trackifai-backend1.onrender.
+
+---
+
 ## ✨ Features
 
 - 🔐 User Authentication (Login / Register)
